@@ -2,7 +2,7 @@
 
 
 
-
+#include <algorithm>
 
 
 
@@ -73,9 +73,9 @@ void update_racer_and_track(Racer *r, Track *track) // includes masking
 
 
 	float time_left_in_timestep = 1.0;
-	int segment_that_collides = NULL;
+	int segment_that_collides = 0;
 	//Terrain *terrain_that_collides = NULL;
-	TrackSegment *terrain_that_collides = NULL;
+	TrackSegment *terrain_that_collides = nullptr;
 	bool collides_on_left_terrain = false;
 	vec2d point_of_intersection;
 
@@ -99,17 +99,19 @@ void update_racer_and_track(Racer *r, Track *track) // includes masking
 
 		float collision_time = 1.0;
 
-		SegmentInfo motion_segment(player_pos, player_pos+player_vel*time_left_in_timestep);
+      vec2d __start = player_pos;
+      vec2d __end = player_pos+player_vel*time_left_in_timestep;
+		SegmentInfo motion_segment(__start, __end);
 
 		vec2d &E = motion_segment.from_start;//*terrain.point[i] - *terrain.point[i-1];
 		vec2d &P1 = motion_segment.perpendicular;//Vec2d(-F.y, F.x);
-		terrain_that_collides = NULL;
+		terrain_that_collides = nullptr;
 		collides_through_exit = false;
 		collides_through_entrance = false;
 
 		//for (int t=0; t<(int)map.terrain.size(); t++)
-		int track_segment_start = max(index_of_last_track_segment_that_collides-2, 0);
-		int track_segment_end = min(index_of_last_track_segment_that_collides+2, (int)track->segment.size()-1);
+		int track_segment_start = std::max(index_of_last_track_segment_that_collides-2, 0);
+		int track_segment_end = std::min(index_of_last_track_segment_that_collides+2, (int)track->segment.size()-1);
 
 		//std::cout << "collision start end: " << track_segment_start << " -- " << track_segment_end << std::endl;
 
@@ -167,7 +169,7 @@ void update_racer_and_track(Racer *r, Track *track) // includes masking
 					collision_time = g; // it occurs at g of this step
 					//segment_that_collides = i;
 					point_of_intersection = g*motion_segment.from_start + motion_segment.start;
-					terrain_that_collides = NULL;
+					terrain_that_collides = nullptr;
 					collides_through_entrance = false;
 					//collides_on_left_terrain = true; // <---!!!important
 				}
@@ -196,7 +198,7 @@ void update_racer_and_track(Racer *r, Track *track) // includes masking
 						//segment_that_collides = i;
 						
 						point_of_intersection = g*motion_segment.from_start + motion_segment.start;
-						terrain_that_collides = NULL;
+						terrain_that_collides = nullptr;
 						//collides_on_left_terrain = true; // <---!!!important
 					}
 				}
@@ -278,7 +280,7 @@ void update_racer_and_track(Racer *r, Track *track) // includes masking
 			//collision_time*motion_segment.from_start
 			//player_vel = 
 		}
-		else if (terrain_that_collides != NULL) 
+		else if (terrain_that_collides != nullptr) 
 		{
 				//std::cout << "c";
 				// displace along colliding normal (offset padding)

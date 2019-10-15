@@ -446,39 +446,45 @@ void Track::draw_projected(CheapCamera *cam, float racer_direction_angle, float 
 
 	//// DRAW PARTICLES
 
-	goto no_particles_yo;
+	//goto no_particles_yo;
 
-	int particle_draw_count = 0;
-	for (int i=0; i<(int)particle_effect::particle.size(); i++)
-	{
-		particle_effect *particle = particle_effect::particle[i];
-		if (particle->in_use && particle->image)
-		{
-			particle->projected_position = particle->position;
-			rotate_point(&particle->projected_position, vec2d(racer_x, racer_y), radians_to_degrees(camera_rotation)); 
+   bool draw_particles = false;
 
-			float point_x = particle->projected_position.x;
-			float point_y = track_y_value;
-			float point_z = particle->projected_position.y;
+   if (draw_particles)
+   {
 
-			if (point_z < 0) continue;
+      int particle_draw_count = 0;
+      for (int i=0; i<(int)particle_effect::particle.size(); i++)
+      {
+         particle_effect *particle = particle_effect::particle[i];
+         if (particle->in_use && particle->image)
+         {
+            particle->projected_position = particle->position;
+            rotate_point(&particle->projected_position, vec2d(racer_x, racer_y), radians_to_degrees(camera_rotation)); 
 
-			float depth_scale = good_camera->get_scale(point_z);
-			al_draw_scaled_rotated_bitmap(particle->image,
-										  al_get_bitmap_width(particle->image)*_align_x,
-										  al_get_bitmap_height(particle->image)*_align_y,
-										  (point_x - good_camera->x)*depth_scale + good_camera->center_point.x,
-										  (point_y - good_camera->y)*depth_scale + good_camera->center_point.y,
-										  _scale_x*depth_scale,
-										  _scale_y*depth_scale,
-										  _rotation,
-										  flags);
+            float point_x = particle->projected_position.x;
+            float point_y = track_y_value;
+            float point_z = particle->projected_position.y;
 
-			//particle_draw_count++;
-		}
-	}
+            if (point_z < 0) continue;
 
-	no_particles_yo:
+            float depth_scale = good_camera->get_scale(point_z);
+            al_draw_scaled_rotated_bitmap(particle->image,
+                                   al_get_bitmap_width(particle->image)*_align_x,
+                                   al_get_bitmap_height(particle->image)*_align_y,
+                                   (point_x - good_camera->x)*depth_scale + good_camera->center_point.x,
+                                   (point_y - good_camera->y)*depth_scale + good_camera->center_point.y,
+                                   _scale_x*depth_scale,
+                                   _scale_y*depth_scale,
+                                   _rotation,
+                                   flags);
+
+            //particle_draw_count++;
+         }
+      }
+   }
+
+	//no_particles_yo:
 	stop_profile_timer("DP 2");
 
 	//std::cout << "drawing particles : " << particle_draw_count << std::endl;

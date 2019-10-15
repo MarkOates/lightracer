@@ -8,6 +8,7 @@
 #include "profiling_timer.h"
 
 
+
 bool logo_showing = true;
 float logo_scale = 0.0;
 
@@ -27,10 +28,10 @@ float delay_time_since_last_affect = 1.0;
 
 
 
-ALLEGRO_SAMPLE_INSTANCE *instance_hit_bad = NULL;
-ALLEGRO_SAMPLE_INSTANCE *instance_hit_bounce = NULL;
-ALLEGRO_SAMPLE_INSTANCE *instance_hit_med = NULL;
-ALLEGRO_SAMPLE_INSTANCE *instance_hit_soft = NULL;
+ALLEGRO_SAMPLE_INSTANCE *instance_hit_bad = nullptr;
+ALLEGRO_SAMPLE_INSTANCE *instance_hit_bounce = nullptr;
+ALLEGRO_SAMPLE_INSTANCE *instance_hit_med = nullptr;
+ALLEGRO_SAMPLE_INSTANCE *instance_hit_soft = nullptr;
 
 
 
@@ -60,14 +61,14 @@ void play_hit_soft()
 
 
 
-ALLEGRO_SAMPLE_INSTANCE *engine_sample_instance = NULL;
-ALLEGRO_SAMPLE_INSTANCE *passthough_sample_instance = NULL;
-ALLEGRO_SAMPLE_INSTANCE *music_sample_instance = NULL;
-ALLEGRO_SAMPLE_INSTANCE *exit_sample_instance = NULL;
-ALLEGRO_SAMPLE *music_sample = NULL;
+ALLEGRO_SAMPLE_INSTANCE *engine_sample_instance = nullptr;
+ALLEGRO_SAMPLE_INSTANCE *passthough_sample_instance = nullptr;
+ALLEGRO_SAMPLE_INSTANCE *music_sample_instance = nullptr;
+ALLEGRO_SAMPLE_INSTANCE *exit_sample_instance = nullptr;
+ALLEGRO_SAMPLE *music_sample = nullptr;
 
-ALLEGRO_VOICE *engine_voice = NULL;
-ALLEGRO_MIXER *engine_mixer = NULL;
+ALLEGRO_VOICE *engine_voice = nullptr;
+ALLEGRO_MIXER *engine_mixer = nullptr;
 bool FLAG_draw_profile_graph = false;
 
 ALLEGRO_COLOR start_text_color;
@@ -177,13 +178,13 @@ public:
 	}
 };
 
-CheapCamera *camera = NULL;
+CheapCamera *camera = nullptr;
 
 
 #include "good_camera.h"
 
 
-camera_class *good_camera = NULL;
+camera_class *good_camera = nullptr;
 
 
 void zoom_way_out()
@@ -245,7 +246,7 @@ public:
 	static vector<particle_effect *> particle;
 public:
 	static int last_particle_index;
-	particle_effect() : image(NULL), in_use(false) {}
+	particle_effect() : image(nullptr), in_use(false) {}
 	static void reserve_particles(int num)
 	{
 		for (int i=0; i<(int)particle.size(); i++) delete particle[i];
@@ -297,7 +298,7 @@ void create_particle_spread(float x, float y)
 {
 	return;
 
-	particle_effect *particle = NULL;
+	particle_effect *particle = nullptr;
 	int num_balls_in_spread = 20;
 	for (int i=0; i<num_balls_in_spread; i++)
 	{
@@ -367,7 +368,7 @@ public:
 		return right_rail.size() + left_rail.size();
 	}
 
-	TrackSegment() : color_type(COLOR_TYPE_YELLOW), entrance_p1(NULL), entrance_p2(NULL), entrance_segment_info(NULL)
+	TrackSegment() : color_type(COLOR_TYPE_YELLOW), entrance_p1(nullptr), entrance_p2(nullptr), entrance_segment_info(nullptr)
     {}
 
 	~TrackSegment()
@@ -612,11 +613,11 @@ public:
 	static vector<int> __this_point_belongs_to_segment;
 
 	static vector<vec2d> track_rail_light; // < for caching
-	static vector<std::pair<bool, int>> rail_light_belongs_to; // < for caching
+	static vector<std::pair<bool, int> > rail_light_belongs_to; // < for caching
 	static vector<vec2d> track_rail_light_projected; // < for caching
 
-	static vector<std::pair<bool, int>> __left_color_light_belongs_to; // < for caching
-	static vector<std::pair<bool, int>> __right_color_light_belongs_to; // < for caching
+	static vector<std::pair<bool, int> > __left_color_light_belongs_to; // < for caching
+	static vector<std::pair<bool, int> > __right_color_light_belongs_to; // < for caching
 
 	static vector<float> car_distance_cache;
 
@@ -633,7 +634,7 @@ public:
 	ALLEGRO_VERTEX right_point[512];
 
 
-	Track() : exit_segment_info(NULL) {}
+	Track() : exit_segment_info(nullptr) {}
 
 	~Track()
 	{
@@ -730,9 +731,9 @@ vector<int> Track::__this_point_belongs_to_segment;
 vector<vec2d> Track::track_rail_light; // < for caching
 vector<vec2d> Track::track_rail_light_projected; // < for caching
 vector<float> Track::car_distance_cache;
-vector<std::pair<bool, int>> Track::rail_light_belongs_to;
-vector<std::pair<bool, int>> Track::__left_color_light_belongs_to;
-vector<std::pair<bool, int>> Track::__right_color_light_belongs_to;
+vector<std::pair<bool, int> > Track::rail_light_belongs_to;
+vector<std::pair<bool, int> > Track::__left_color_light_belongs_to;
+vector<std::pair<bool, int> > Track::__right_color_light_belongs_to;
 
 
 
@@ -865,9 +866,9 @@ public:
 
 // globuals //
 
-Track *track = NULL;
-TrackSegment *track_segment = NULL;
-Racer *racer = NULL;
+Track *track = nullptr;
+TrackSegment *track_segment = nullptr;
+Racer *racer = nullptr;
 
 
 
@@ -941,7 +942,7 @@ void draw_hud()
 	*/
 
 	std::string lives_string = "Lives: " + tostring(num_lives);
-	al_draw_text(get_font("lacuna.ttf", -19), al_color_name("white"), 20, 550, NULL, lives_string.c_str());
+	al_draw_text(get_font("lacuna.ttf", -19), al_color_name("white"), 20, 550, 0, lives_string.c_str());
 
 	float health_percentage = racer->health/racer->max_health;
 	ALLEGRO_COLOR health_bar_color;
@@ -1047,7 +1048,7 @@ bool create_random_track(Track *t, int num_segments)
 
 	if (num_segments > 30) num_segments = 30;
 
-	TrackSegment *track_segment = NULL;
+	TrackSegment *track_segment = nullptr;
 
 	track->create_gate(); // gate is added automatically
 
@@ -1270,7 +1271,7 @@ void init_game()
 
 	
 
-	//al_play_sample(get_sample("engine"), 0.5, 0.5, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+	//al_play_sample(get_sample("engine"), 0.5, 0.5, 1.0, ALLEGRO_PLAYMODE_LOOP, nullptr);
 
 	track = new Track();
 	create_random_track(track, num_of_segments_in_track);
@@ -1432,7 +1433,7 @@ void game_timer_func()
 		al_clear_to_color(color_hex("000000"));
 		ALLEGRO_BITMAP *logo_img = get_image("lightracer_logo.png");
 		al_draw_scaled_rotated_bitmap(logo_img, al_get_bitmap_width(logo_img)/2, al_get_bitmap_height(logo_img)/2,
-			400, 250, logo_scale, logo_scale, 0, NULL);
+			400, 250, logo_scale, logo_scale, 0, 0);
 
 			al_draw_text(get_font("lacuna.ttf", -20), al_color_name("white"),
 				400, 325, ALLEGRO_ALIGN_CENTRE, "Use only the ARROW KEYS to play");

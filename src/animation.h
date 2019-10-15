@@ -4,79 +4,13 @@
 #include "interpolations.h"
 #include <allegro5/allegro.h>
 
-class AnimationControl;
+//class AnimationControl;
 
 
-inline AnimationControl *find_control(float *val);
+#include "AnimationControl.hpp"
 
+AnimationControl *find_control(float *val);
 
-class AnimationControl
-{
-private:
-	// basic //
-	float *val;
-	float start, end;
-	double start_time, length_sec;
-	float (*interpolation)(float);
-
-	// advanced features would include callback, pause, id/class identifiers, pause, and delta_time //
-	void (*callback_func)();
-	//void *callback_data;
-
-public:
-	bool active;
-	AnimationControl() : active(false), val(NULL), start(0), end(0),
-		start_time(0), length_sec(0), interpolation(interpolator::linear)
-	{}
-	inline AnimationControl &set(float *val, float start, float end, double length_sec, float (*interpolation)(float))
-	{
-		this->active = true;
-		this->val = val;
-		this->start = start;
-		this->end = end;
-		this->start_time = al_get_time();
-		this->length_sec = length_sec;
-		this->interpolation = interpolation;
-		this->callback_func = NULL;
-		//this->callback_data = NULL;
-		return *this;
-	}
-
-	inline AnimationControl &delay(float time_sec)
-	{
-		this->start_time += time_sec;
-		return *this;
-	}
-
-	inline AnimationControl &easing(float (*interpolation)(float))
-	{
-		this->interpolation = interpolation;
-		return *this;
-	}
-
-	inline AnimationControl &callback(void (*callback_func)())
-	{
-		this->callback_func = callback_func;
-		return *this;
-	}
-
-	inline void update(double time)
-	{
-		if (active)
-		{
-			if (time >= start_time+length_sec)
-			{
-				active = false;
-				*val = end;
-				if (callback_func) callback_func();
-			}
-			else if (time < start_time) { /* do nothing */ }
-			else *val = interpolation((time-start_time)/length_sec) * (end-start) + start;
-		}
-	}
-
-	friend inline AnimationControl *find_control(float *val);
-};
 
 
 #include <vector>
@@ -117,7 +51,7 @@ public:
 
 
 
-static inline AnimationControl *find_control(float *val)
+AnimationControl *find_control(float *val)
 {
 	for (int i=0; i<(int)AnimationManager::get_instance()->control.size(); i++)
 		if (AnimationManager::get_instance()->control[i]->val == val)
