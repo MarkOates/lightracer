@@ -1592,7 +1592,7 @@ void game_timer_func()
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
 	Framework f;
 	init_profiling();
